@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch, RootState } from "./redux/store"
 import { setLoading, tokenReceived } from './redux/reducers/AuthSlice'
-import { useRefreshUserMutation } from './redux/services/AuthServices'
+import { useRefreshUserMutation } from './redux/services/RefreshServices'
 import { ToastContainer } from "react-toastify";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
@@ -20,7 +20,6 @@ function App() {
       if (localStorage.getItem('accessToken')) {
         try {
           const response = await refresh().unwrap()
-          console.log('sending from App.js')
           tokenReceived(response)
         } catch (e) {
           console.log(e)
