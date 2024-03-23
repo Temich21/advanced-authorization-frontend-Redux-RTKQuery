@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import type { RootState } from '../../redux/store'
 import { useAppSelector, useAppDispatch } from "../../redux/store"
 import { useLoginUserMutation, useRegistrateUserMutation } from '../../redux/services/AuthServices'
@@ -15,7 +15,7 @@ const AuthForm: FC = () => {
     const dispatch = useAppDispatch()
     const { eye } = useAppSelector((state: RootState) => state.eyeReducer)
 
-    const [loginUser, { isSuccess: isLoadingSuccess }] = useLoginUserMutation()
+    const [loginUser] = useLoginUserMutation()
     const [registrateUser] = useRegistrateUserMutation()
 
     const {
@@ -31,6 +31,7 @@ const AuthForm: FC = () => {
             const response = await loginUser(data).unwrap()
             dispatch(tokenReceived(response))
             toast.success("Login successful")
+            navigate('/dashboard')
         } catch (error) {
             const e = error as IError
             if (e?.data?.errors?.length) {
@@ -59,14 +60,8 @@ const AuthForm: FC = () => {
         }
     }
 
-    useEffect(() => {
-        if (isLoadingSuccess) {
-            navigate('/dashboard')
-        }
-    }, [isLoadingSuccess, navigate])
-
     return (
-        <main className="flex flex-col items-center pt-9">
+        <main className="flex flex-col items-center">
             <form className="flex flex-col gap-3 p-5 text-white bg-blue-500 rounded-sm">
                 <div className='text-xl'>Authorization</div>
                 <div className="flex flex-col border-b-2">

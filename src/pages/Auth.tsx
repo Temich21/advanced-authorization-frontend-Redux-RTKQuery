@@ -5,7 +5,7 @@ function Auth() {
     <div>
       <LoginForm />
     </div>
-  );
+  )
 }
 
 export default Auth;
