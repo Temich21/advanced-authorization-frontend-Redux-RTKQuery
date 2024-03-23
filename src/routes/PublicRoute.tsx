@@ -4,6 +4,8 @@ import { useRefreshUserMutation } from "../redux/services/RefreshServices"
 import { useEffect } from "react"
 import { tokenReceived } from "../redux/reducers/AuthSlice"
 import Loading from "../components/Loading/Loading"
+import IError from "../models/IError"
+import { toast } from "react-toastify"
 
 const PublicRoute = () => {
     const dispatch = useAppDispatch()
@@ -16,8 +18,9 @@ const PublicRoute = () => {
                 const response = await refresh().unwrap()
                 dispatch(tokenReceived(response))
                 navigate('/dashboard')
-            } catch (e) {
-                console.log(e)
+            } catch (error) {
+                const e = error as IError
+                toast.error(e?.data?.message || "Login failed")
             }
         }
 
@@ -25,7 +28,6 @@ const PublicRoute = () => {
             refreshData()
         }
     }, [])
-
 
     if (isRefreshLoading) {
         return <Loading />

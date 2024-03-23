@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 import LoadingToRedirect from "../components/Loading/LoadingToRedirect"
 import { RootState, useAppDispatch, useAppSelector } from "../redux/store"
 import { useRefreshUserMutation } from "../redux/services/RefreshServices"
@@ -21,11 +21,10 @@ const PrivateRoute = () => {
         } 
       }
 
-      if (localStorage.getItem('accessToken')) {
+      if (localStorage.getItem('accessToken') && !isAuth) {
         refreshData()
       }
     }, [])
-
 
     if (isRefreshLoading) {
       return <Loading />
